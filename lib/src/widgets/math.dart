@@ -176,7 +176,7 @@ class Math extends StatelessWidget {
         effectiveTextStyle =
             DefaultTextStyle.of(context).style.merge(textStyle);
       }
-      if (MediaQuery.boldTextOf(context)) {
+      if (MediaQuery.boldTextOverride(context)) {
         effectiveTextStyle = effectiveTextStyle
             .merge(const TextStyle(fontWeight: FontWeight.bold));
       }

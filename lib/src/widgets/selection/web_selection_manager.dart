@@ -117,7 +117,7 @@ mixin WebSelectionControlsManagerMixin<T extends StatefulWidget>
         _textInputConnection?.setEditableSizeAndTransform(size, transform);
       }
       SchedulerBinding.instance
-          .addPostFrameCallback((Duration _) => _updateSizeAndTransform());
+          ?.addPostFrameCallback((Duration _) => _updateSizeAndTransform());
     }
   }
 

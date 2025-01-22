@@ -28,7 +28,7 @@ class MathSelectionGestureDetectorBuilder {
 
   /// Handler for [TextSelectionGestureDetector.onTapDown].
   @protected
-  void onTapDown(TapDragDownDetails details) {
+  void onTapDown(TapDownDetails details) {
     lastTapDownPosition = details.globalPosition;
     // The selection overlay should only be shown when the user is interacting
     // through a touch screen (via either a finger or a stylus). A mouse
@@ -95,7 +95,7 @@ class MathSelectionGestureDetectorBuilder {
   ///  * [TextSelectionGestureDetector.onSingleTapUp], which triggers
   ///    this callback.
   @protected
-  void onSingleTapUp(TapDragUpDetails details) {
+  void onSingleTapUp(TapUpDetails details) {
     if (delegate.selectionEnabled) {
       delegate.selectPositionAt(
           from: lastTapDownPosition!, cause: SelectionChangedCause.tap);
@@ -145,7 +145,7 @@ class MathSelectionGestureDetectorBuilder {
   }
 
   @protected
-  void onDoubleTapDown(TapDragDownDetails details) {
+  void onDoubleTapDown(TapDownDetails details) {
     if (delegate.selectionEnabled) {
       delegate.selectWordAt(
           offset: details.globalPosition, cause: SelectionChangedCause.tap);
@@ -154,7 +154,7 @@ class MathSelectionGestureDetectorBuilder {
   }
 
   @protected
-  void onDragSelectionStart(TapDragStartDetails details) {
+  void onDragSelectionStart(DragStartDetails details) {
     delegate.selectPositionAt(
       from: details.globalPosition,
       cause: SelectionChangedCause.drag,
@@ -162,15 +162,16 @@ class MathSelectionGestureDetectorBuilder {
   }
 
   @protected
-  void onDragSelectionEnd(TapDragEndDetails details) {
+  void onDragSelectionEnd(DragEndDetails details) {
     /* Subclass should override this method if needed. */
   }
 
   @protected
-  void onDragSelectionUpdate(TapDragUpdateDetails details) {
+  void onDragSelectionUpdate(
+      DragStartDetails startDetails, DragUpdateDetails updateDetails) {
     delegate.selectPositionAt(
-      from: details.globalPosition - details.offsetFromOrigin,
-      to: details.globalPosition,
+      from: updateDetails.globalPosition - startDetails.globalPosition,
+      to: updateDetails.globalPosition,
       cause: SelectionChangedCause.drag,
     );
   }

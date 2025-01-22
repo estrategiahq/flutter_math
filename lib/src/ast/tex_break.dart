@@ -21,7 +21,7 @@ extension SyntaxTreeTexStyleBreakExt on SyntaxTree {
               enforceNoBreak: true,
             ))
         .whereType<BreakResult>()
-        .fold(
+        .fold<BreakResult>(
             BreakResult(parts: [], penalties: []),
             (previousValue, element) => BreakResult(parts: [
                   ...previousValue.parts,

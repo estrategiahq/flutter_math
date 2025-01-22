@@ -230,7 +230,7 @@ class SelectableMath extends StatelessWidget {
     if (effectiveTextStyle == null || effectiveTextStyle.inherit) {
       effectiveTextStyle = DefaultTextStyle.of(context).style.merge(textStyle);
     }
-    if (MediaQuery.boldTextOf(context)) {
+    if (MediaQuery.boldTextOverride(context)) {
       effectiveTextStyle = effectiveTextStyle
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
@@ -242,7 +242,8 @@ class SelectableMath extends StatelessWidget {
         MathOptions(
           style: mathStyle,
           fontSize: effectiveTextStyle.fontSize! * textScaleFactor,
-          mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal && effectiveTextStyle.fontWeight != null
+          mathFontOptions: effectiveTextStyle.fontWeight != FontWeight.normal &&
+                  effectiveTextStyle.fontWeight != null
               ? FontOptions(fontWeight: effectiveTextStyle.fontWeight!)
               : null,
           logicalPpi: logicalPpi,
@@ -453,7 +454,7 @@ class InternalSelectableMathState extends State<InternalSelectableMath>
     super.didChangeDependencies();
     if (!_didAutoFocus && widget.autofocus) {
       _didAutoFocus = true;
-      SchedulerBinding.instance.addPostFrameCallback((_) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
         if (mounted) {
           FocusScope.of(context).autofocus(widget.focusNode!);
         }

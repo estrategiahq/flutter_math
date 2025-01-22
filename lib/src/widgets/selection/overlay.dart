@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +26,7 @@ class MathSelectionOverlay {
   }) : _handlesVisible = handlesVisible {
     final overlay = Overlay.of(context, rootOverlay: true);
     _toolbarController =
-        AnimationController(duration: fadeDuration, vsync: overlay);
+        AnimationController(duration: fadeDuration, vsync: overlay!);
   }
 
   /// The context in which the selection handles should appear.
@@ -129,9 +130,9 @@ class MathSelectionOverlay {
     _handlesVisible = visible;
     // If we are in build state, it will be too late to update visibility.
     // We will need to schedule the build in next frame.
-    if (SchedulerBinding.instance.schedulerPhase ==
+    if (SchedulerBinding.instance?.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback(_markNeedsBuild);
+      SchedulerBinding.instance?.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
     }
@@ -150,7 +151,7 @@ class MathSelectionOverlay {
     ];
 
     Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)
-        .insertAll(_handles!);
+        ?.insertAll(_handles!);
   }
 
   /// Destroys the handles by removing them from overlay.
@@ -167,7 +168,7 @@ class MathSelectionOverlay {
     assert(_toolbar == null);
     _toolbar = OverlayEntry(builder: _buildToolbar);
     Overlay.of(context, rootOverlay: true, debugRequiredFor: debugRequiredFor)
-        .insert(_toolbar!);
+        ?.insert(_toolbar!);
     _toolbarController.forward(from: 0.0);
   }
 
@@ -181,9 +182,9 @@ class MathSelectionOverlay {
   /// that if you do call this during a build, the UI will not update until the
   /// next frame (i.e. many milliseconds later).
   void update() {
-    if (SchedulerBinding.instance.schedulerPhase ==
+    if (SchedulerBinding.instance?.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback(_markNeedsBuild);
+      SchedulerBinding.instance?.addPostFrameCallback(_markNeedsBuild);
     } else {
       _markNeedsBuild();
     }

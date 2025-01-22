@@ -15,6 +15,9 @@ void drawSvgRoot(PictureInfo svgRoot, PaintingContext context, Offset offset) {
     svgRoot.size.width,
     svgRoot.size.height,
   ));
-  canvas.drawPicture(svgRoot.picture);
+  final picture = svgRoot.picture;
+  if (picture != null) {
+    canvas.drawPicture(picture);
+  }
   canvas.restore();
 }

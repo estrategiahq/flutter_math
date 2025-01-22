@@ -135,10 +135,10 @@ mixin SelectionOverlayManagerMixin<T extends StatefulWidget>
         debugRequiredFor: widget,
       );
       _selectionOverlay!.handlesVisible = _shouldShowSelectionHandles(cause);
-      if (SchedulerBinding.instance.schedulerPhase ==
+      if (SchedulerBinding.instance?.schedulerPhase ==
           SchedulerPhase.persistentCallbacks) {
         SchedulerBinding.instance
-            .addPostFrameCallback((_) => _selectionOverlay!.showHandles());
+            ?.addPostFrameCallback((_) => _selectionOverlay!.showHandles());
       } else {
         _selectionOverlay!.showHandles();
       }

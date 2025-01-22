@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:collection/collection.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math_fork/src/utils/iterable_extensions.dart';
 
 import '../../ast/nodes/matrix.dart';
 import '../constants.dart';

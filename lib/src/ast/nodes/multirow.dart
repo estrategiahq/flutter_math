@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -137,7 +136,7 @@ class MultiRowLayoutDelegate extends IntrinsicLayoutDelegate<int> {
         rows, (index) => childrenWidths[index] ?? 0.0,
         growable: false);
 
-    var maxWidth = childWidths.fold(
+    var maxWidth = childWidths.fold<double>(
       0.0,
       (previousValue, element) => max(previousValue, element),
     );
