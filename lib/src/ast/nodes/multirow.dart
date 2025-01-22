@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -23,6 +24,7 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
 
   factory MultiRowNode({
     required List<EquationRowNode> children,
+    double arrayStretch = 1.0,
   }) {
     final rows = children.length;
     final sanitizedBody = children;
@@ -44,6 +46,7 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
         offset: options.fontMetrics.axisHeight.cssEm.toLpUnder(options),
         child: CustomLayout<int>(
           delegate: MultiRowLayoutDelegate(
+            arrayskip: 12.0.pt.toLpUnder(options),
             rows: rows,
           ),
           children: childBuildResults
@@ -106,9 +109,11 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
 
 class MultiRowLayoutDelegate extends IntrinsicLayoutDelegate<int> {
   final int rows;
+  final double arrayskip;
 
   MultiRowLayoutDelegate({
     required this.rows,
+    required this.arrayskip,
   }) : hLinePos = List.filled(rows + 1, 0.0, growable: false);
 
   List<double> hLinePos;
@@ -161,11 +166,11 @@ class MultiRowLayoutDelegate extends IntrinsicLayoutDelegate<int> {
       return height != null ? childrenHeights[index]! - height : 0.0;
     }, growable: false);
 
-    final rowHeights = List.filled(rows, 0.0, growable: false);
-    final rowDepth = List.filled(rows, 0.0, growable: false);
+    final rowHeights = List.filled(rows, 0.7 * arrayskip, growable: false);
+    final rowDepth = List.filled(rows, 0.3 * arrayskip, growable: false);
     for (var i = 0; i < rows; i++) {
-      rowHeights[i] = childHeights[i];
-      rowDepth[i] = childDepth[i];
+      rowHeights[i] = max(rowHeights[i], childHeights[i]);
+      rowDepth[i] = max(rowDepth[i], childDepth[i]);
     }
 
     var pos = 0.0;
