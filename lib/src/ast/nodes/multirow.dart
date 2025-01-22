@@ -10,25 +10,26 @@ import '../size.dart';
 import '../syntax_tree.dart';
 
 class MultiRowNode extends SlotableNode<EquationRowNode?> {
-  final List<EquationRowNode> body;
+  final List<EquationRowNode> _children;
 
-  /// Row number.
+  /// Row count.
   final int rows;
 
   MultiRowNode._({
     required this.rows,
-    required this.body,
-  }) : assert(body.length == rows);
+    required List<EquationRowNode> children,
+  })  : _children = children,
+        assert(children.length == rows);
 
   factory MultiRowNode({
-    required List<EquationRowNode> body,
+    required List<EquationRowNode> children,
   }) {
-    final rows = body.length;
-    final sanitizedBody = body;
+    final rows = children.length;
+    final sanitizedBody = children;
 
     return MultiRowNode._(
       rows: rows,
-      body: sanitizedBody,
+      children: sanitizedBody,
     );
   }
 
@@ -36,7 +37,6 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
   BuildResult buildWidget(
       MathOptions options, List<BuildResult?> childBuildResults) {
     assert(childBuildResults.length == rows);
-    // Flutter's Table does not provide fine-grained control of borders
     return BuildResult(
       options: options,
       widget: ShiftBaseline(
@@ -62,7 +62,7 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
       List.filled(rows, options, growable: false);
 
   @override
-  List<EquationRowNode?> computeChildren() => body.toList(growable: false);
+  List<EquationRowNode?> computeChildren() => _children.toList(growable: false);
 
   @override
   AtomType get leftType => AtomType.ord;
@@ -82,21 +82,21 @@ class MultiRowNode extends SlotableNode<EquationRowNode?> {
       (i) => newChildren[i],
       growable: false,
     );
-    return copyWith(body: body);
+    return copyWith(children: body);
   }
 
   MultiRowNode copyWith({
     double? arrayStretch,
-    List<EquationRowNode>? body,
+    List<EquationRowNode>? children,
   }) =>
       MultiRowNode(
-        body: body ?? this.body,
+        children: children ?? this._children,
       );
 
   @override
   Map<String, Object?> toJson() => super.toJson()
     ..addAll({
-      'body': body.map((e) => e?.toJson()),
+      'children': _children.map((e) => e.toJson()),
     });
 
   String toString() {

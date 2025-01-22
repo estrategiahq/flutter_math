@@ -14,7 +14,7 @@ extension SyntaxTreeTexStyleBreakExt on SyntaxTree {
     int binOpPenalty = 700,
     bool enforceNoBreak = true,
   }) {
-    final eqRowBreakResult = greenRoot.body
+    final eqRowBreakResult = greenRoot.children
         .map((e) => e?.texBreak(
               relPenalty: relPenalty,
               binOpPenalty: binOpPenalty,

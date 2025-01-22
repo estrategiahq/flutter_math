@@ -16,7 +16,7 @@ String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
     node = node.children.first!;
   }
   assert(node is SymbolNode);
-  return node.encodeTeX(
+  return node?.encodeTeX(
     conf: mode == Mode.math ? TexEncodeConf.mathConf : TexEncodeConf.textConf,
   );
 }

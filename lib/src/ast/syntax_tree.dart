@@ -106,7 +106,7 @@ class SyntaxTree {
         return node1;
       }
     }
-    return greenRoot.body.last!;
+    return greenRoot.children.last!;
   }
 
   List<GreenNode> findSelectedNodes(int position1, int position2) {
@@ -746,7 +746,7 @@ extension GreenNodeWrappingExt on GreenNode {
       return this as MultiRowNode;
     }
     var children = <EquationRowNode>[];
-    return MultiRowNode(body: children);
+    return MultiRowNode(children: children);
   }
 
   /// If this node is [EquationRowNode], its children will be returned. If not,
@@ -787,7 +787,7 @@ extension GreenNodeListWrappingExt on List<GreenNode> {
 
   MultiRowNode wrapWithMultiRow() {
     if (this.length == 1 && this[0] is EquationRowNode) {
-      return MultiRowNode(body: [this[0] as EquationRowNode]);
+      return MultiRowNode(children: [this[0] as EquationRowNode]);
     }
     var nodes = [<GreenNode>[]];
     for (var n in this) {
@@ -798,7 +798,7 @@ extension GreenNodeListWrappingExt on List<GreenNode> {
     }
 
     return MultiRowNode(
-      body: nodes.map((e) => EquationRowNode(children: e)).toList(),
+      children: nodes.map((e) => EquationRowNode(children: e)).toList(),
     );
   }
 }
