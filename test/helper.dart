@@ -156,7 +156,7 @@ const nonstrictSettings = TexParserSettings(strict: Strict.ignore);
 
 EquationRowNode getParsed(String expr,
         [TexParserSettings settings = const TexParserSettings()]) =>
-    TexParser(expr, settings).parse();
+    TexParser(expr, settings).parse().children.first!;
 
 String prettyPrintJson(Map<String, Object> a) =>
     JsonEncoder.withIndent('| ').convert(a);

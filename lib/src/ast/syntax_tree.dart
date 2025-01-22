@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_math_fork/src/parser/tex/functions/katex_base.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
@@ -15,6 +16,7 @@ import '../utils/wrapper.dart';
 import '../widgets/controller.dart';
 import '../widgets/mode.dart';
 import '../widgets/selectable.dart';
+import 'nodes/multirow.dart';
 import 'nodes/space.dart';
 import 'nodes/sqrt.dart';
 import 'options.dart';
@@ -26,7 +28,7 @@ import 'types.dart';
 /// [Description of Roslyn's Red-Green Tree](https://docs.microsoft.com/en-us/archive/blogs/ericlippert/persistence-facades-and-roslyns-red-green-trees)
 class SyntaxTree {
   /// Root of the green tree
-  final EquationRowNode greenRoot;
+  final MultiRowNode greenRoot;
 
   SyntaxTree({
     required this.greenRoot,
@@ -45,7 +47,7 @@ class SyntaxTree {
       return this;
     }
     if (identical(pos, root)) {
-      return SyntaxTree(greenRoot: newNode.wrapWithEquationRow());
+      return SyntaxTree(greenRoot: newNode.wrapWithMultiRow());
     }
     final posParent = pos.parent;
     if (posParent == null) {
@@ -104,7 +106,7 @@ class SyntaxTree {
         return node1;
       }
     }
-    return greenRoot;
+    return greenRoot.children.last!;
   }
 
   List<GreenNode> findSelectedNodes(int position1, int position2) {
@@ -733,6 +735,14 @@ extension GreenNodeWrappingExt on GreenNode {
     return EquationRowNode(children: [this]);
   }
 
+  MultiRowNode wrapWithMultiRow() {
+    if (this is MultiRowNode) {
+      return this as MultiRowNode;
+    }
+    var children = <EquationRowNode>[];
+    return MultiRowNode(children: children);
+  }
+
   /// If this node is [EquationRowNode], its children will be returned. If not,
   /// itself will be returned in a list.
   List<GreenNode> expandEquationRow() {
@@ -767,6 +777,23 @@ extension GreenNodeListWrappingExt on List<GreenNode> {
       return this[0] as EquationRowNode;
     }
     return EquationRowNode(children: this);
+  }
+
+  MultiRowNode wrapWithMultiRow() {
+    if (this.length == 1 && this[0] is EquationRowNode) {
+      return MultiRowNode(children: [this[0] as EquationRowNode]);
+    }
+    var nodes = [<GreenNode>[]];
+    for (var n in this) {
+      nodes.last.add(n);
+      if (n is CrNode) {
+        nodes.add(<GreenNode>[]);
+      }
+    }
+
+    return MultiRowNode(
+      children: nodes.map((e) => EquationRowNode(children: e)).toList(),
+    );
   }
 }
 
@@ -813,7 +840,6 @@ enum AtomType {
   inner,
 
   spacing, // symbols
-
 }
 
 /// Only for improvisional use during parsing. Do not use.

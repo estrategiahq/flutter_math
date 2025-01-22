@@ -11,7 +11,12 @@ String recodeTexSymbol(String tex, [Mode mode = Mode.math]) {
   if (mode == Mode.text) {
     tex = '\\text{$tex}';
   }
-  var node = TexParser(tex, const TexParserSettings()).parse().children.first;
+  var node = TexParser(tex, const TexParserSettings())
+      .parse()
+      .children
+      .first!
+      .children
+      .first;
   while (node is ParentableNode) {
     node = node.children.first!;
   }
