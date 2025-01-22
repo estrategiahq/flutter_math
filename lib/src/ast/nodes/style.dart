@@ -40,7 +40,4 @@ class StyleNode extends TransparentNode {
         children: children ?? this.children,
         optionsDiff: optionsDiff ?? this.optionsDiff,
       );
-  String toString() {
-    return this.children.map((e) => e.toString()).toString();
-  }
 }

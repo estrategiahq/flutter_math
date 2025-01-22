@@ -251,10 +251,6 @@ class MatrixNode extends SlotableNode<EquationRowNode?> {
         'hLines': hLines.map((e) => e.toString()),
       'body': body.map((e) => e.map((e) => e?.toJson())),
     });
-
-  String toString() {
-    return "MatrixNode(${this.children.map((e) => e.toString()).toString()})";
-  }
 }
 
 class MatrixLayoutDelegate extends IntrinsicLayoutDelegate<int> {

@@ -195,7 +195,6 @@ class SyntaxNode {
   List<BuildResult?> _buildChildWidgets(List<MathOptions> childOptions) {
     assert(children.length == childOptions.length);
     if (children.isEmpty) return const [];
-    print(this.value.toString());
     return List.generate(children.length,
         (index) => children[index]?.buildWidget(childOptions[index]),
         growable: false);
@@ -681,11 +680,6 @@ class EquationRowNode extends ParentableNode<GreenNode>
         overrideType: overrideType ?? this.overrideType,
         children: children ?? this.children,
       );
-
-  @override
-  String toString() {
-    return "$runtimeType(${this.children.map((e) => e.toString()).toString()})";
-  }
 }
 
 mixin _ClipChildrenMixin on ParentableNode<GreenNode> {
@@ -856,25 +850,23 @@ class TemporaryNode extends LeafNode {
   @override
   BuildResult buildWidget(
           MathOptions options, List<BuildResult?> childBuildResults) =>
-      throw UnsupportedError(
-          'Temporary node $runtimeType encountered. buildWidget');
+      throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
-  AtomType get leftType => throw UnsupportedError(
-      'Temporary node $runtimeType encountered. leftType');
+  AtomType get leftType =>
+      throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
-  AtomType get rightType => throw UnsupportedError(
-      'Temporary node $runtimeType encountered. rightType');
+  AtomType get rightType =>
+      throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
   bool shouldRebuildWidget(MathOptions oldOptions, MathOptions newOptions) =>
-      throw UnsupportedError(
-          'Temporary node $runtimeType encountered. shouldRebuildWidget');
+      throw UnsupportedError('Temporary node $runtimeType encountered.');
 
   @override
-  int get editingWidth => throw UnsupportedError(
-      'Temporary node $runtimeType encountered. editingWidth');
+  int get editingWidth =>
+      throw UnsupportedError('Temporary node $runtimeType encountered.');
 }
 
 class BuildResult {
