@@ -1,3 +1,13 @@
+## 0.7.3+2
+* Fixes example android build
+
+## 0.7.3+1
+* Adds linebreak on `\\`
+
+## 0.7.3
+
+* Add support for flutter 3.27.0
+
 ## 0.7.3
 
 * Add support for flutter 3.27.0
